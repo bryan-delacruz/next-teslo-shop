@@ -1,11 +1,15 @@
-import Image from "next/image";
-import { titleFont } from "@/config/fonts";
-import { Title } from "@/components/ui/title/Title";
+import { Title,ProductsGrid } from "@/components";
+import { initialData } from "@/seed/seed";
+
+const products = initialData.products
 
 export default function Home() {
   return (
     <>
       <Title title="tienda" subTitle="todos los productos" className="mb-2" />
+      <ProductsGrid
+        products={products}
+        />
     </>
   );
 }
