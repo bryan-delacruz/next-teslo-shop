@@ -12,6 +12,16 @@ async function main() {
     ]
   )
 
+  const { products, categories } = initialData
+
+  const categoriesData = categories.map(name => ({name}))
+
+  // 2. Categorías
+
+  await prisma.category.createMany({
+    data: categoriesData
+  })
+
 
   console.log("Seed ejecutado correctamente")
 }
