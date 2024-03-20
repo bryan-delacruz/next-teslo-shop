@@ -1,5 +1,6 @@
 import type { CartProduct } from "@/interfaces";
 import { create } from 'zustand';
+import { persist } from "zustand/middleware";
 
 interface State {
   cart: CartProduct[]
@@ -14,6 +15,8 @@ export const useCartStore = create<State>()(
 
     addProductToCart: (product: CartProduct) => {
       const { cart } = get()
+
+      console.log(cart)
 
       const productInCart = cart.some((item) => item.id === product.id && item.size === product.size)
 
