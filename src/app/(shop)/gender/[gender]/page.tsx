@@ -24,7 +24,6 @@ export default async function GenderByPage({ params, searchParams }: Props) {
     page, 
     gender: gender as Gender })
 
-  // console.log(currentPage, totalPages);
 
   if (products.length === 0) {
     redirect(`/gender/${gender}`)
