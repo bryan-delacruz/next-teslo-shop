@@ -11,6 +11,7 @@ export const ProductsInCart = () => {
 
   const [loaded, setLoaded] = useState(false)
   const productsInCart = useCartStore(state => state.cart)
+  const updateProductQuantity = useCartStore(state => state.updateProductQuantity)
 
   useEffect(() => {
     setLoaded(true)
@@ -37,12 +38,15 @@ export const ProductsInCart = () => {
           />
           <div>
             <Link
-              className="hover:underline cursor-pointer" 
+              className="hover:underline cursor-pointer"
               href={`/product/${product.slug}`}>
-                <p>{product.size} - {product.title}</p>
+              <p>{product.size} - {product.title}</p>
             </Link>
             <p>S/{product.price}</p>
-            <QuantitySelector quantity={3} onQuantityChanged={value => console.log(value)} />
+            <QuantitySelector
+              quantity={product.quantity}
+              onQuantityChanged={quantity => updateProductQuantity(product, quantity)}
+            />
             <button className="underline mt-3">
               Remover
             </button>
