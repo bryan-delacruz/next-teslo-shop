@@ -4,12 +4,16 @@ import prisma from "../lib/prisma"
 async function main() {
 
   // 1. Borrar registros previos
+  await prisma.user.deleteMany(),
+    await prisma.productImage.deleteMany(),
+    await prisma.product.deleteMany(),
+    await prisma.category.deleteMany()
 
-  await prisma.productImage.deleteMany(),
-  await prisma.product.deleteMany(),
-  await prisma.category.deleteMany()
+  const { products, categories, users } = initialData
 
-  const { products, categories } = initialData
+  await prisma.user.createMany({
+    data: users
+  })
 
 
   // 2. Categorías
