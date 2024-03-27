@@ -18,10 +18,10 @@ export const LoginForm = () => {
         name="email" />
 
 
-      <label htmlFor="email">Contraseña</label>
+      <label htmlFor="password">Contraseña</label>
       <input
         className="px-5 py-2 border bg-gray-200 rounded mb-5"
-        type="email"
+        type="password"
         name="password" />
 
       <button
