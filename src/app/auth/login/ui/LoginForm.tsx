@@ -8,7 +8,7 @@ import { IoInformationOutline } from "react-icons/io5"
 export const LoginForm = () => {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
-  console.log(errorMessage);
+  console.log({errorMessage});
 
   return (
     <form action={dispatch} className="flex flex-col">
