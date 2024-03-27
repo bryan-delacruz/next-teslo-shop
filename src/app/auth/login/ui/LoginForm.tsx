@@ -1,13 +1,15 @@
 "use client"
 import { authenticate } from "@/actions"
+import clsx from "clsx"
 import Link from "next/link"
-import { useFormState } from "react-dom"
+import { useFormState, useFormStatus } from "react-dom"
+import { IoInformationOutline } from "react-icons/io5"
 
 export const LoginForm = () => {
-  const [state, dispatch] = useFormState(authenticate,undefined)
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
-  console.log(state);
-  
+  console.log(errorMessage);
+
   return (
     <form action={dispatch} className="flex flex-col">
 
@@ -24,11 +26,19 @@ export const LoginForm = () => {
         type="password"
         name="password" />
 
-      <button
-        type="submit"
-        className="btn-primary">
-        Ingresar
-      </button>
+      <div
+        className="flex h-8 items-end space-x-1"
+        aria-live="polite"
+        aria-atomic="true">
+        {errorMessage && (
+          <div className="flex flex-row mb-2">
+            <IoInformationOutline className="h-5 w-5 text-red-500" />
+            <p className="text-sm text-red-500">{errorMessage}</p>
+          </div>
+        )}
+      </div>
+
+      <LoginButton/>
 
 
       {/* divisor l ine */}
@@ -46,4 +56,20 @@ export const LoginForm = () => {
 
     </form>
   )
+}
+
+function LoginButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      className={clsx({
+        "btn-primary":!pending,
+        "btn-disabled":pending
+      })}
+      disabled={pending}>
+      {pending?"Validando...":"Ingresar"}
+    </button>
+  );
 }
