@@ -16,7 +16,7 @@ export const authConfig: NextAuthConfig = {
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        console.log(parsedCredentials.success);
+        console.log({parsedCredentialsSuccess:parsedCredentials.success});
 
         if (!parsedCredentials.success) return null
 
@@ -30,7 +30,7 @@ export const authConfig: NextAuthConfig = {
 
         const {password: _, ...rest} = user
 
-        console.log(rest)
+        console.log({userRest:rest})
 
         return rest
       },
