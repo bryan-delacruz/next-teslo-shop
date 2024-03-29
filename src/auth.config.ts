@@ -11,6 +11,18 @@ export const authConfig: NextAuthConfig = {
   },
 
   callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      console.log({ auth })
+      // const isLoggedIn = !!auth?.user
+      // const isOnDashboard = nextUrl.pathname.startsWith("/dashboard")
+      // if (isOnDashboard) {
+      //   if (isLoggedIn) return true
+
+      // } else if (isLoggedIn) {
+      //   return Response.redirect(new URL("/dashboard", nextUrl))
+      // }
+      return true
+    },
     jwt({ token, user }) {
       if (user) {
         token.data = user
@@ -18,7 +30,7 @@ export const authConfig: NextAuthConfig = {
       return token
     },
     session({ session, token, user }) {
-      console.log({ session, token, user });
+      // console.log({ session, token, user });
       session.user = token.data as any
       return session
     }
@@ -30,7 +42,7 @@ export const authConfig: NextAuthConfig = {
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        console.log({ parsedCredentialsSuccess: parsedCredentials.success });
+        // console.log({ parsedCredentialsSuccess: parsedCredentials.success });
 
         if (!parsedCredentials.success) return null
 
@@ -44,7 +56,7 @@ export const authConfig: NextAuthConfig = {
 
         const { password: _, ...rest } = user
 
-        console.log({ userRest: rest })
+        // console.log({ userRest: rest })
 
         return rest
       },
