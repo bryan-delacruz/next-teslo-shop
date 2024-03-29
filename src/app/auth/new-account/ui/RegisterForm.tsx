@@ -1,5 +1,6 @@
 "use client"
 
+import clsx from "clsx"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 
@@ -27,23 +28,44 @@ export const RegisterForm = () => {
 
       <label htmlFor="name">Nombre completo</label>
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        className={
+          clsx(
+            "px-5 py-2 border bg-gray-200 rounded mb-5",
+            {
+              "border-red-500": !!errors.name
+            }
+          )
+        }
         type="text"
         autoFocus
         {...register("name", { required: true })} />
 
       <label htmlFor="email">Correo electrónico</label>
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        className={
+          clsx(
+            "px-5 py-2 border bg-gray-200 rounded mb-5",
+            {
+              "border-red-500": !!errors.email
+            }
+          )
+        }
         type="email"
         {...register("email", { required: true, pattern: /\S+@\S+\.\S+/ })} />
 
 
       <label htmlFor="password">Contraseña</label>
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        className={
+          clsx(
+            "px-5 py-2 border bg-gray-200 rounded mb-5",
+            {
+              "border-red-500": !!errors.password
+            }
+          )
+        }
         type="password"
-        {...register("password", { required: true })} />
+        {...register("password", { required: true, minLength: 6 })} />
 
       <button
 
