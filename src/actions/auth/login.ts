@@ -17,7 +17,7 @@ export async function authenticate(
 
     await signIn('credentials', {
       ...Object.fromEntries(formData),
-      redirect:false,
+      redirect: false,
     });
 
     return "Success"
@@ -34,5 +34,20 @@ export async function authenticate(
     }
     return 'UnknowError.';
     // throw error;
+  }
+}
+
+export const login = async (email: string, password: string) => {
+
+  try {
+    await signIn("credentials", { email, password })
+
+    return { ok: true }
+  } catch (error) {
+    console.log(error)
+    return {
+      ok: false,
+      message: "No se pudo iniciar sessión"
+    }
   }
 }

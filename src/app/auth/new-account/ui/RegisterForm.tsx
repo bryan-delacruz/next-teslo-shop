@@ -1,6 +1,6 @@
 "use client"
 
-import { registerUser } from "@/actions"
+import { login, registerUser } from "@/actions"
 import clsx from "clsx"
 import Link from "next/link"
 import { useState } from "react"
@@ -26,7 +26,8 @@ export const RegisterForm = () => {
       return
     }
 
-    console.log({ resp });
+    await login(email.toLocaleLowerCase(), password)
+    window.location.replace("/")
 
   }
   return (
