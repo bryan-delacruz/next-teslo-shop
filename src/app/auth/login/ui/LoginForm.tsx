@@ -39,7 +39,7 @@ export const LoginForm = () => {
         className="flex h-8 items-end space-x-1"
         aria-live="polite"
         aria-atomic="true">
-        {state && (
+        {state==="Invalid credentials." || state==="UnknowError." && (
           <div className="flex flex-row mb-2">
             <IoInformationOutline className="h-5 w-5 text-red-500" />
             <p className="text-sm text-red-500">{state}</p>
