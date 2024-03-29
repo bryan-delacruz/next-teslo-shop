@@ -5,11 +5,14 @@ import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPer
 import { useUIStore } from "@/store"
 import clsx from "clsx"
 import { logout } from "@/actions"
+import { useSession } from "next-auth/react"
 
 export const Sidebar = () => {
 
   const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen)
   const closeMenu = useUIStore(state => state.closeSideMenu)
+
+  const { data: session } = useSession()
 
   return (
     <div>
@@ -19,9 +22,9 @@ export const Sidebar = () => {
       }
       {
         isSideMenuOpen &&
-        <div 
+        <div
           className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm"
-          onClick={()=>closeMenu()} />
+          onClick={() => closeMenu()} />
       }
       <nav className={clsx("fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
         { "translate-x-full": !isSideMenuOpen })}>
@@ -63,7 +66,7 @@ export const Sidebar = () => {
 
         <button
           className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-          onClick={()=>logout()}
+          onClick={() => logout()}
         >
           <IoLogOutOutline size={30} />
           <span className="ml-3 text-xl">Salir</span>
