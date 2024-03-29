@@ -15,17 +15,24 @@ export async function authenticate(
     })
     // await sleep(2)
 
-    await signIn('credentials', formData);
+    await signIn('credentials', {
+      ...Object.fromEntries(formData),
+      redirect:false,
+    });
+
+    return "Success"
 
   } catch (error) {
     if (error instanceof AuthError) {
+      console.log(error)
       switch (error.type) {
         case 'CredentialsSignin':
           return 'Invalid credentials.';
         default:
-          return 'Something went wrong.';
+          return 'UnknowError.';
       }
     }
+    return 'UnknowError.';
     // throw error;
   }
 }
