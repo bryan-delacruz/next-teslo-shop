@@ -2,19 +2,20 @@
 import { authenticate } from "@/actions"
 import clsx from "clsx"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { IoInformationOutline } from "react-icons/io5"
 
 export const LoginForm = () => {
 
-  const router = useRouter()
+  // const router = useRouter()
   const [state, dispatch] = useFormState(authenticate, undefined);
 
   useEffect(() => {
     if (state === "Success") {
-      router.replace("/")
+      // router.replace("/")
+      window.location.replace("/")
     }
   }, [state])
 
@@ -39,7 +40,7 @@ export const LoginForm = () => {
         className="flex h-8 items-end space-x-1"
         aria-live="polite"
         aria-atomic="true">
-        {state==="Invalid credentials." || state==="UnknowError." && (
+        {state === "Invalid credentials." || state === "UnknowError." && (
           <div className="flex flex-row mb-2">
             <IoInformationOutline className="h-5 w-5 text-red-500" />
             <p className="text-sm text-red-500">{state}</p>
