@@ -1,6 +1,6 @@
 "use client"
 
-import { setUserAddress } from "@/actions"
+import { deleteUserAddress, setUserAddress } from "@/actions"
 import type { Country } from "@/interfaces"
 import { useAddressStore } from "@/store"
 import { sleep } from "@/utils"
@@ -59,6 +59,7 @@ export const AddressForm = ({ countries }: Props) => {
       setUserAddress(restAddress, session!.user.id)
     } else {
       // Todo: Server Action
+      deleteUserAddress(session!.user.id)
     }
 
   }
