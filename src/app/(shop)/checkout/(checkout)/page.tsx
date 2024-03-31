@@ -1,13 +1,7 @@
 import { Title } from "@/components";
 import Link from "next/link";
-import { initialData } from '@/seed/seed';
 import Image from "next/image";
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-]
+import { ProductsInCart } from "./ui/ProductsInCart";
 
 export default function CheckoutPage() {
   return (
@@ -22,26 +16,7 @@ export default function CheckoutPage() {
               Editar carrito
             </Link>
             {/* Items */}
-            {productsInCart.map(product => (
-              <div key={product.slug} className="flex mb-5">
-                <Image
-                  src={`/products/${product.images[0]}`}
-                  width={100}
-                  height={100}
-                  style={{
-                    width: "100px",
-                    height: "100px"
-                  }}
-                  alt={product.title}
-                  className="mr-5 rounded"
-                />
-                <div>
-                  <p>{product.title}</p>
-                  <p>S/{product.price}</p>
-                  <p className="font-bold">Subtotal: S/{product.price * 3}</p>
-                </div>
-              </div>
-            ))}
+            <ProductsInCart />
           </div>
           {/* Checkout */}
           <div className="bg-white rounded-xl shadow-xl p-7">

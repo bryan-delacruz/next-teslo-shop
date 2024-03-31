@@ -10,7 +10,8 @@
 5. Correr las migraciones de Prisma ```npx prisma migrate dev```
 6. Ejecutar seed ```npm run seed```
 7. Actualizar la variable de entorno AUTH_SECRET con el valor que nos devuelva al ejecutar este comando ```openssl rand -base64 32```
-8. Correr el proyecto ```npm run dev```
+8. Limpiar el localStorage del navegador
+9. Correr el proyecto ```npm run dev```
 
 
 ## Correr en Prod
