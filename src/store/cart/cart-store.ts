@@ -19,6 +19,8 @@ interface State {
   updateProductQuantity: (product: CartProduct, quantity: number) => void
 
   removeProduct: (product: CartProduct) => void
+
+  clearCart: () => void
 }
 
 export const useCartStore = create<State>()(
@@ -33,7 +35,7 @@ export const useCartStore = create<State>()(
       },
 
       getSummaryInformation: () => {
-        const { cart,getTotalItems } = get()
+        const { cart, getTotalItems } = get()
 
         const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0)
         const tax = subtotal * 0.15
@@ -46,7 +48,7 @@ export const useCartStore = create<State>()(
       addProductToCart: (product: CartProduct) => {
         const { cart } = get()
 
-        console.log({cart})
+        console.log({ cart })
 
         const productInCart = cart.some((item) => item.id === product.id && item.size === product.size)
 
@@ -89,7 +91,10 @@ export const useCartStore = create<State>()(
         const updatedCartProducts = cart.filter(item => item.id !== product.id || item.size !== product.size)
 
         set({ cart: updatedCartProducts })
-      }
+      },
+      clearCart: () => {
+        set({ cart: [] })
+      },
     })
     ,
     {
