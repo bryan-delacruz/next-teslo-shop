@@ -1,4 +1,5 @@
 import type { CartProduct } from "@/interfaces";
+import { objVariables } from "@/utils";
 import { create } from 'zustand';
 import { persist } from "zustand/middleware";
 
@@ -38,7 +39,7 @@ export const useCartStore = create<State>()(
         const { cart, getTotalItems } = get()
 
         const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0)
-        const tax = subtotal * 0.15
+        const tax = subtotal * objVariables.tax
         const total = subtotal + tax
         const itemsInCart = getTotalItems()
 

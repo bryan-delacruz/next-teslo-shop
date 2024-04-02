@@ -3,6 +3,7 @@
 import { auth } from "@/auth.config"
 import { Address, Size } from "@/interfaces"
 import prisma from "@/lib/prisma"
+import { objVariables } from "@/utils"
 
 interface ProductToOrder {
   productId: string
@@ -43,8 +44,8 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
 
     const subTotal = product.price * productQuantity
     totals.subtotal += subTotal
-    totals.tax += subTotal * 0.15
-    totals.total += subTotal * 1.15
+    totals.tax += subTotal * objVariables.tax
+    totals.total += subTotal * (1 + objVariables.tax)
 
     return totals
   }, { subtotal: 0, tax: 0, total: 0 })

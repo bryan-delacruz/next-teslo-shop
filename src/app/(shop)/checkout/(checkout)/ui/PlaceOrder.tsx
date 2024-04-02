@@ -1,7 +1,7 @@
 "use client"
 import { placeOrder } from "@/actions"
 import { useAddressStore, useCartStore } from "@/store"
-import { currencyFormat } from "@/utils"
+import { currencyFormat, objVariables } from "@/utils"
 import clsx from "clsx"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -71,7 +71,7 @@ export const PlaceOrder = () => {
         <span>Subtotal</span>
         <span className="text-right">{currencyFormat(subtotal)}</span>
 
-        <span>Impuestos (18%)</span>
+        <span>Impuestos ({objVariables.tax * 100}%)</span>
         <span className="text-right">{currencyFormat(tax)}</span>
 
         <span className="mt-5 text-2xl">Total</span>
