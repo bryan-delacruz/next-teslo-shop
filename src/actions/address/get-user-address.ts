@@ -21,7 +21,6 @@ export const getUserAddress = async (userId: string) => {
     }
 
   } catch (error) {
-    console.log(error)
     return null
   }
 }

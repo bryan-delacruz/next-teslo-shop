@@ -10,9 +10,6 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    console.log({
-      formDataObj: Object.fromEntries(formData),
-    })
     // await sleep(2)
 
     await signIn('credentials', {
@@ -24,7 +21,6 @@ export async function authenticate(
 
   } catch (error) {
     if (error instanceof AuthError) {
-      console.log(error)
       switch (error.type) {
         case 'CredentialsSignin':
           return 'Invalid credentials.';
@@ -44,7 +40,6 @@ export const login = async (email: string, password: string) => {
 
     return { ok: true }
   } catch (error) {
-    console.log(error)
     return {
       ok: false,
       message: "No se pudo iniciar sessión"

@@ -60,7 +60,6 @@ export const getOrderById = async (id: string) => {
     }
 
   } catch (error) {
-    console.log(error);
 
     return {
       ok: false,
