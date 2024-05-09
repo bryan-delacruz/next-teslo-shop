@@ -8,6 +8,8 @@ export * from "./address/get-user-address"
 
 export * from "./payments/set-transaction-id"
 
+export * from "./payments/paypal-check-payment"
+
 export * from "./product/product-pagination"
 export * from "./product/get-product-by-slug"
 export * from "./product/get-stock-by-slug"
