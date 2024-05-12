@@ -1,5 +1,7 @@
 'use server'
 
+import { PaypalOrderStatusResponse } from "@/interfaces";
+
 export const paypalCheckPayment = async (paypalTransactionId: string) => {
 
   const authToken = await getPaypalBearerToken()
@@ -12,6 +14,31 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
       message: "No se pudo obtener token de verificación"
     }
   }
+
+  const resp = await vertifyPaypalPayment(paypalTransactionId, authToken)
+
+  if (!resp) {
+    return {
+      ok: false,
+      meesage: 'Error al verificar el pago'
+    }
+  }
+
+  const { status, purchase_units } = resp
+
+  // const {  } = purchase_units[0] // todo: invoice id
+
+  if (status !== 'COMPLETED') {
+    return {
+      ok: false,
+      message: 'Aún no se ha pagado en PayPal'
+    }
+  }
+
+  // todo: actualizar en la bd
+
+  console.log({ status, purchase_units });
+
 
 }
 
@@ -43,6 +70,26 @@ const getPaypalBearerToken = async (): Promise<string | null> => {
     const result = await fetch(oauth2Url, requestOptions).then(r => r.json())
     return result.access_token
 
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+
+}
+
+const vertifyPaypalPayment = async (paypalTransactionId: string, bearerToken: string): Promise<PaypalOrderStatusResponse | null> => {
+  const paypalOrderUrl = `${process.env.PAYPAL_ORDERS_URL}/${paypalTransactionId}`
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${bearerToken}`);
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+  };
+
+  try {
+    const resp = fetch(paypalOrderUrl, requestOptions).then((r) => r.json())
+    return resp
   } catch (error) {
     console.log(error);
     return null

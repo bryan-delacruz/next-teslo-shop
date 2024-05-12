@@ -41,13 +41,10 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
       throw new Error("No se pudo actualizar la orden")
     }
 
-    console.log({ transactionId });
-
     return transactionId
   }
 
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
-    console.log('onApprove');
     
     const details = await actions.order?.capture()
 
