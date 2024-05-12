@@ -28,6 +28,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
     const transactionId = await actions.order.create({
       purchase_units: [
         {
+          invoice_id: orderId,
           amount: {
             value: `${rountedAmount}`
           }
