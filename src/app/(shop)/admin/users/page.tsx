@@ -19,7 +19,7 @@ export default async function OrderPage() {
 
       <div className="mb-10">
         <UserTable users={users} />
-        <Pagination totalPages={3}/>
+        <Pagination totalPages={1}/>
       </div>
     </>
   );
