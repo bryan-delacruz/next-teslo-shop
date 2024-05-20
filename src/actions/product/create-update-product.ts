@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { Gender, Product, Size } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod'
 
 const productSchema = z.object({
@@ -42,53 +43,65 @@ export const createUpdateProduct = async (formData: FormData) => {
 
   const { id, ...rest } = product
 
-  const prismaTx = await prisma.$transaction(async (tx) => {
+  try {
 
-    let product: Product
-    const tagsArrary = rest.tags.split(',').map(tag => tag.trim().toLowerCase())
+    const prismaTx = await prisma.$transaction(async (tx) => {
 
-    if (id) {
-      product = await prisma.product.update({
-        where: { id },
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[]
-          },
-          tags: {
-            set: tagsArrary
+      let product: Product
+      const tagsArrary = rest.tags.split(',').map(tag => tag.trim().toLowerCase())
+
+      if (id) {
+        product = await prisma.product.update({
+          where: { id },
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[]
+            },
+            tags: {
+              set: tagsArrary
+            }
           }
-        }
-      })
+        })
 
 
 
-    } else {
-      product = await prisma.product.create({
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[]
-          },
-          tags: {
-            set: tagsArrary
+      } else {
+        product = await prisma.product.create({
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[]
+            },
+            tags: {
+              set: tagsArrary
+            }
           }
-        }
-      })
+        })
 
-      console.log({ product });
+        console.log({ product });
 
-    }
+      }
+
+      return {
+        product
+      }
+    })
+    
+    // todo: revalidate paths
+
+    revalidatePath('/admin/products')
+    revalidatePath(`/admin/product/${product.slug}`)
+    revalidatePath(`/products/${product.slug}`)
 
     return {
-      product
+      ok: true,
+      product: prismaTx.product
     }
-  })
-
-  // todo: revalidate paths
-
-  return {
-    ok: true
+  } catch (error) {
+    return {
+      ok: false,
+      message: 'Revisar los logs, no se pudo actualizar'
+    }
   }
-
 }
