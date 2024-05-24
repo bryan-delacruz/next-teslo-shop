@@ -20,7 +20,7 @@ export const LoginForm = () => {
       // router.replace("/")
       window.location.replace(redirectTo)
     }
-  }, [state])
+  }, [state, searchParams])
 
 
   return (
