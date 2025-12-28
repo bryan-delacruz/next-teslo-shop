@@ -12,25 +12,46 @@ export const authConfig: NextAuthConfig = {
 
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      // const isLoggedIn = !!auth?.user
-      // const isOnDashboard = nextUrl.pathname.startsWith("/dashboard")
-      // if (isOnDashboard) {
-      //   if (isLoggedIn) return true
+      const isLoggedIn = !!auth?.user;
+      const isAdminData = auth?.user?.role === 'admin';
+      
+      const protectedRoutes = [
+        '/checkout',
+        '/profile', 
+        '/orders',
+        '/admin',
+      ];
+      
+      const isProtectedRoute = protectedRoutes.some(route => nextUrl.pathname.startsWith(route));
+      const isAdminRoute = nextUrl.pathname.startsWith('/admin');
 
-      // } else if (isLoggedIn) {
-      //   return Response.redirect(new URL("/dashboard", nextUrl))
-      // }
-      return true
+      // 1. Unauthenticated users trying to access protected routes
+      if (isProtectedRoute && !isLoggedIn) {
+        return false;
+      }
+
+      // 2. Non-admin users trying to access admin routes
+      if (isAdminRoute && !isAdminData) {
+        return Response.redirect(new URL('/', nextUrl));
+      }
+
+      // 3. Authenticated users trying to access auth routes (login/register)
+      if (isLoggedIn && nextUrl.pathname.startsWith('/auth/')) {
+        return Response.redirect(new URL('/', nextUrl));
+      }
+
+      return true;
     },
     jwt({ token, user }) {
       if (user) {
-        token.data = user
+        token.data = user;
       }
-      return token
+      return token;
     },
     session({ session, token, user }) {
-      session.user = token.data as any
-      return session
+      // Cast to correct type based on nextauth.d.ts augmentation
+      session.user = token.data as any; // Keeping 'any' temporarily if the type structure is complex, but 'token.data' should match User
+      return session;
     }
   },
   providers: [
@@ -41,23 +62,24 @@ export const authConfig: NextAuthConfig = {
           .safeParse(credentials);
 
 
-        if (!parsedCredentials.success) return null
+        if (!parsedCredentials.success) return null;
 
         const { email, password } = parsedCredentials.data;
 
-        const user = await prisma.user.findUnique({ where: { email: email.toLocaleLowerCase() } })
+        const user = await prisma.user.findUnique({ where: { email: email.toLocaleLowerCase() } });
 
-        if (!user) return null
+        if (!user) return null;
 
-        if (!bcryptjs.compareSync(password, user.password)) return null
+        if (!bcryptjs.compareSync(password, user.password)) return null;
 
-        const { password: _, ...rest } = user
+        // Return user without password
+        const { password: _, ...rest } = user;
 
 
-        return rest
+        return rest;
       },
     }),
   ]
 }
 
-export const { signIn, signOut, auth, handlers } = NextAuth(authConfig)
+export const { signIn, signOut, auth, handlers } = NextAuth(authConfig);
